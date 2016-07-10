@@ -39,7 +39,14 @@ public class ProfileSegment {
 		if (_initVel > _finalVel) {
 			retValue = -1;
 		}
+		
+		if (_initVel == _finalVel){
+			retValue = 0;
+		}
 
 		return retValue;
+	}
+	public double getSegTime(){
+		return Math.abs((_finalVel - _initVel)/_accel);
 	}
 }
