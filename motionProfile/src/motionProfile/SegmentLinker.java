@@ -21,7 +21,7 @@ public class SegmentLinker {
 		_initVelocity = 0;
 		_cruiseVelocity = cruiseVelocity;
 		_accelleration = accelleration;
-		testSeg = new ProfileSegment(_initVelocity, cruiseVelocity, accelleration);
+		testSeg = new ProfileSegment(_initVelocity, _cruiseVelocity, _accelleration);
 		if(getProfileShape() == 3){
 			accelSeg = new ProfileSegment(_initVelocity, _cruiseVelocity, _accelleration);
 			cruiseSeg = new ProfileSegment(_cruiseVelocity, _cruiseVelocity, _accelleration);
@@ -39,7 +39,23 @@ public class SegmentLinker {
 		}
 		getProfileTimes();
 	}
-
+	
+	public double getProfileDist(){
+		if(cruiseSeg != null){
+		return accelSeg.getSegmentDistance() + cruiseSeg.getSegmentDistance() + deccelSeg.getSegmentDistance();
+		} else {
+			return accelSeg.getSegmentDistance() + deccelSeg.getSegmentDistance();
+		}
+	}
+	
+	public double getTotalDistTravelled(){
+		if(cruiseSeg != null){
+			return accelSeg.getDistenaceTravelled() + cruiseSeg.getDistenaceTravelled() + deccelSeg.getDistenaceTravelled();
+		} else {
+			return accelSeg.getDistenaceTravelled() + deccelSeg.getDistenaceTravelled();
+		}
+	}
+	
 	public double getProfileShape(){
 		double SegNum = 0;
 		if((testSeg.getSegmentDistance() * 2) >= _distance){
@@ -50,30 +66,28 @@ public class SegmentLinker {
 		return SegNum;
 	}
 	
-	public double getProfileAccellTimes() {
-		// Given a velocity determine the accel times
-		double retvalue = 0.0;
-		try {
-			retvalue = (_cruiseVelocity - _initVelocity) / _accelleration;
-		} catch (ArithmeticException e) {
-			// Uncomment to print error message
-			// e.printStackTrace();
-		}
-		return retvalue;
-	}
-	
-	void getProfileTimes(){
+	public void getProfileTimes(){
 		_accelTime = accelSeg.getSegTime();
 		if(cruiseSeg != null){
 			_deccelTime = cruiseSeg.getSegTime() + _accelTime;
 		}
-		try{
-		_stopTime = deccelSeg.getSegTime() + _deccelTime;
-		} catch (ArithmeticException n){
-			// Uncomment to print error message
-			// n.printStackTrace();
+		if(_deccelTime != 0){
+			_stopTime = deccelSeg.getSegTime() + _deccelTime;
+		} else {
 			_stopTime = deccelSeg.getSegTime() + _accelTime;
 		}
+	}
+	
+	public double readAccelTime(){
+		return _accelTime;
+	}
+	
+	public double readDeccelTime(){
+		return _deccelTime;
+	}
+	
+	public double readStopTime(){
+		return _stopTime;
 	}
 	
 	public double getCurrProfileVelocity(double time){
@@ -82,8 +96,12 @@ public class SegmentLinker {
 			currVel = accelSeg.getSegCurrVel(time);
 		} else if((time > _accelTime)&&(cruiseSeg == null)){
 			currVel = deccelSeg.getSegCurrVel(time - _accelTime);
-		} else if ((_accelTime<time) && (time < _deccelTime)){
+		} else if ((_accelTime<time) && (time < _deccelTime) && (cruiseSeg != null)){
 			currVel = cruiseSeg.getSegCurrVel(time - _accelTime);
+		} else if ((_deccelTime < time) && (time > _stopTime)){
+			currVel = deccelSeg.getSegCurrVel(time - _deccelTime);
+		} else {
+			currVel = 0; //we have stopped
 		}
 		return currVel;
 	}
