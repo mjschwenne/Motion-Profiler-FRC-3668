@@ -23,7 +23,7 @@ public class MotionProfiler {
 		_cruiseVelocity = cruiseVeloctiy;
 		_accelleration = accelleration;
 		_accelTime = getProfileAccellTimes(); 
-		_cruiseDistance = _distance - (2 * getProfileDeltaX()); 
+		_cruiseDistance = _distance - (2 * _accelTime); 
 		_cruiseTime = _cruiseDistance / _cruiseVelocity; 
 		_deccelTime = _accelTime + _cruiseTime;
 		_stopTime = _deccelTime + _accelTime;
@@ -63,7 +63,7 @@ public class MotionProfiler {
 		}
 		// we are accellerating
 		else if (time < _accelTime) {
-			msg = "accellerating";
+			msg = "accelerating";
 			//System.out.println(msg);
 			currVel = _initVelocity + (_accelleration * time);
 			_xa = .5 * (_accelleration) * time * time;
@@ -88,8 +88,7 @@ public class MotionProfiler {
 			msg = "stopped";
 			currVel = 0;
 		}
-		double xtotal = _xa + _xc + _xd;
-		//log.makeEntry(msg + "Current Velocity: " + currVel + "Distance Travelled: " + xtotal);
+		log.makeEntry(msg + " Current Velocity: " + currVel + " Distance Travelled: " + getTotalDistanceTraveled());
 		return currVel;
 	}
 

@@ -47,6 +47,7 @@ public class ProfileSegment {
 		return retValue;
 	}
 	public double getSegTime(){
+		//System.out.println(Math.abs(_finalVel-_initVel)/_accel);
 		return Math.abs((_finalVel - _initVel)/_accel);
 	}
 }
