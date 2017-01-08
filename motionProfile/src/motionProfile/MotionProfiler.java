@@ -23,7 +23,7 @@ public class MotionProfiler {
 		_cruiseVelocity = cruiseVeloctiy;
 		_accelleration = accelleration;
 		_accelTime = getProfileAccellTimes(); 
-		_cruiseDistance = _distance - (2 * _accelTime); 
+		_cruiseDistance = _distance - (2 * getProfileDeltaX()); 
 		_cruiseTime = _cruiseDistance / _cruiseVelocity; 
 		_deccelTime = _accelTime + _cruiseTime;
 		_stopTime = _deccelTime + _accelTime;
