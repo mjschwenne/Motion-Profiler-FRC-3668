@@ -33,7 +33,7 @@ public class MotionProfiler {
 	}
 	
 	void end(){
-		log.write();
+		//log.write();
 	}
 
 	public double getProfileAccellTimes() {
@@ -50,13 +50,15 @@ public class MotionProfiler {
 
 	public double getProfileDeltaX() {
 		// returns the deltaX to change the velocity
+		//(Vf*Vf0 = (Vi*Vi) + 2ax
 		return ((_cruiseVelocity * _cruiseVelocity) - (_initVelocity * _initVelocity)) / 2 / _accelleration;
 	}
 
 	public double getProfileCurrVelocity(double time) {
 		// given a time calculate the current Velocity
+		//Vf = Vi + at
 		double currVel = 0;
-		String msg = "";
+		String msg = "error";
 		// we have not started moving yet...
 		if (time < 0) {
 			currVel = 0;
@@ -88,7 +90,7 @@ public class MotionProfiler {
 			msg = "stopped";
 			currVel = 0;
 		}
-		log.makeEntry(msg + " Current Velocity: " + currVel + " Distance Travelled: " + getTotalDistanceTraveled());
+		//log.makeEntry(msg + " Current Velocity: " + currVel + " Distance Travelled: " + getTotalDistanceTraveled());
 		return currVel;
 	}
 

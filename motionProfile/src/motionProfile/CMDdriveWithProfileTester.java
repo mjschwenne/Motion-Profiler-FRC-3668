@@ -16,11 +16,11 @@ public class CMDdriveWithProfileTester {
 		while(cmdDrive.isFinished() == false){
 			cmdDrive.execute();
 			try {
-				Thread.sleep((long)100);
+				Thread.sleep((long)10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+     		}
 			
 	}
 		cmdDrive = null;

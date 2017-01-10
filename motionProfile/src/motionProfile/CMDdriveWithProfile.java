@@ -15,7 +15,7 @@ public class CMDdriveWithProfile {
 	double _startTime;
 	MotionProfiler mp;
 	Logger log = new Logger(ProfileSettings.motionProfileLogName);
-	TurnType turn;
+	
 	
 	public CMDdriveWithProfile(double distance, double cruiseSpeed) {
 		// given distance (inches) and cruise speed (inches per second) drive
@@ -35,7 +35,7 @@ public class CMDdriveWithProfile {
 		double profileVelocity = mp.getProfileCurrVelocity(deltaTime);
 		// are are in the accel time segment of the motion
 		msg = "throttle-pos = " + (profileVelocity / MAXSPEED);
-		//log.makeEntry("Current Velocity: " + profileVelocity + "\t" + msg + "\t deltaTime: " + deltaTime + "\t Total Disantce Travelled: "+mp.getTotalDistanceTraveled());
+		log.makeEntry("Current Velocity: " + profileVelocity + "\t" + msg + "\t deltaTime: " + deltaTime + "\t Total Disantce Travelled: "+mp.getTotalDistanceTraveled());
 		if (deltaTime > mp._stopTime) {
 			_finished = true;
 			end();
