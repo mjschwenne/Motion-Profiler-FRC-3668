@@ -33,7 +33,6 @@ public class CMDdriveWithProfile {
 		String msg;
 		double deltaTime = getTime() - _startTime;
 		double profileVelocity = mp.getProfileCurrVelocity(deltaTime);
-		// are are in the accel time segment of the motion
 		msg = "throttle-pos = " + (profileVelocity / MAXSPEED);
 		log.makeEntry("Current Velocity: " + profileVelocity + "\t" + msg + "\t deltaTime: " + deltaTime + "\t Total Disantce Travelled: "+mp.getTotalDistanceTraveled());
 		if (deltaTime > mp._stopTime) {

@@ -15,6 +15,7 @@ public class Logger {
 	BufferedWriter writer = null;
 	static String timeLog = new SimpleDateFormat("_MM,dd,yyyy_HH,mm,ss").format(Calendar.getInstance().getTime());
 	static Logger log = new Logger(ProfileSettings.logLogName);
+	static int number = 1;
 
 	public Logger(String Name){
 		name = Name;
@@ -31,7 +32,8 @@ public class Logger {
 
 	void makeEntry(String line) {
 		String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
-		entries.add(time+ "\t" + line);
+		entries.add(time+ "\t" +  line);
+		number = number + 1;
 	}
 
 	void write() {

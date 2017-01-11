@@ -16,18 +16,18 @@ public class CMDturnWithProfile {
 	Logger log = new Logger(ProfileSettings.motionProfileLogName);
 	TurnType turn;
 	
-	public CMDturnWithProfile(double degrees, double cruiseSpeed, int turnType) {
+	public CMDturnWithProfile(double degrees, double cruiseSpeed, TurnType type) {
 		// given distance (inches) and cruise speed (inches per second) turn
 		// with nice profile!
 		_degrees = degrees;
-		_distance = calcTurnDist();
+		_distance = calcTurnDist(type);
 		System.out.println("Total distance to travel: " + _distance);
 		_cruiseSpeed = Math.min(Math.sqrt(2*_accerlation*_distance), cruiseSpeed);
 		mp = new MotionProfiler(_distance, ProfileSettings.initVelocity, _cruiseSpeed, _accerlation);
 		_startTime = getTime();
-		calcTurnScalar(turnType);
+		calcTurnScalar(type);
 		System.out.println("Projected Accelration Time:\t" + mp._accelTime + "\tProjected Cruise Time:\t" + mp._cruiseTime
-				+ "\tProjected Deccelration Time:\t" + mp._deccelTime + "\tProjected Length of Drive:\t" + mp._stopTime);
+				+ "\tProjected Deccelration Time:\t" + mp._deccelTime + "\tProjected Length of Drive:\t" + mp._stopTime + "\t Matching Turn Type?: "+type.compareTo(ProfileSettings.TurnType.piontR));
 	}
 
 	void execute() {
@@ -35,10 +35,9 @@ public class CMDturnWithProfile {
 		String msg;
 		double deltaTime = getTime() - _startTime;
 		double profileVelocity = mp.getProfileCurrVelocity(deltaTime);
-		// are are in the accel time segment of the motion
 		msg = "Right-throttle-pos = " + rightMotorScalar*(profileVelocity / MAXSPEED) + " Left-throttle-pos = " + leftMotorScalar*(profileVelocity / MAXSPEED);
-		System.out.println(msg);
-		//log.makeEntry("Current Velocity: " + profileVelocity + "\t" + msg + "\t deltaTime: " + deltaTime + "\t Total Disantce Travelled: "+mp.getTotalDistanceTraveled());
+		//System.out.println(msg);
+		log.makeEntry("Current Velocity: " + profileVelocity + "\t" + msg + "\t deltaTime: " + deltaTime + "\t Total Disantce Travelled: "+mp.getTotalDistanceTraveled());
 		if (deltaTime > mp._stopTime) {
 			_finished = true;
 			end();
@@ -49,26 +48,34 @@ public class CMDturnWithProfile {
 		return (System.nanoTime() / Math.pow(10,9));
 	}
 	
-	public double calcTurnDist(){
-		return ProfileSettings.testRobotCirDia * Math.PI * (_degrees / 360);
+	public double calcTurnDist(TurnType type){
+		double retVal = 0;
+		if(type.compareTo(ProfileSettings.TurnType.piontL) == 0 || type.compareTo(ProfileSettings.TurnType.piontR) == 0){
+			retVal = (ProfileSettings.testRobotCirDia/2) * Math.PI * (_degrees / 360);
+		}
+		if(type.compareTo(ProfileSettings.TurnType.SwingL) == 0 || type.compareTo(ProfileSettings.TurnType.SwingR) == 0){
+			retVal = ProfileSettings.testRobotCirDia * Math.PI * (_degrees / 360);
+		}
+		return retVal;
 	}
 	
-	public void calcTurnScalar(int type){
-		if(type == 1){
+	public void calcTurnScalar(TurnType type){
+		if(type.compareTo(ProfileSettings.TurnType.piontR) == 0){
 			rightMotorScalar = -1;
 			leftMotorScalar = 1;	
 		}
-		if(type == 2){
+		if(type.compareTo(ProfileSettings.TurnType.piontL) == 0){
 			rightMotorScalar = 1;
 			leftMotorScalar = -1;
 		}
-		if(type == 3){
+		if(type.compareTo(ProfileSettings.TurnType.SwingR) == 0){
 			rightMotorScalar = 0;
 			leftMotorScalar = 1;
 		}
-		if(type == 4){
+		if(type.compareTo(ProfileSettings.TurnType.SwingL) == 0){
 			rightMotorScalar = 1;
 			leftMotorScalar = 0;
+			
 		}
 	}
 	

@@ -30,6 +30,9 @@ public class MotionProfiler {
 		_xa = 0;
 		_xc = 0;
 		_xd = 0;
+		//System.out.println("Old Cruise Distance: " + _cruiseDistance + "\t Old Cruise Velocity: " + _cruiseVelocity + "\t Old Accel Time: " + _accelTime+ "\t Old Cruise Time: " + _cruiseTime + "\t Old Deccel Time: "+_deccelTime+ "\t Old Stop Time: " + _stopTime);
+		calcProfileShape();
+		//System.out.println("New Cruise Distance: " + _cruiseDistance + "\t New Cruise Velocity: " + _cruiseVelocity + "\t New Accel Time: " + _accelTime+  "\t New Cruise Time: " + _cruiseTime + "\t New Deccel Time: "+_deccelTime+ "\t New Stop Time: " + _stopTime);
 	}
 	
 	void end(){
@@ -111,5 +114,16 @@ public class MotionProfiler {
 		}
 
 		return retValue;
+	}
+	
+	public void calcProfileShape(){
+		if(_cruiseDistance < 0){
+			_cruiseVelocity = (_initVelocity + Math.sqrt(2*_accelleration * (_distance/2))) * 0.9;
+			_accelTime = getProfileAccellTimes(); 
+			_cruiseDistance = _distance - (2 * getProfileDeltaX()); 
+			_cruiseTime = _cruiseDistance / _cruiseVelocity; 
+			_deccelTime = _accelTime + _cruiseTime;
+			_stopTime = _deccelTime + _accelTime;
+		}
 	}
 }
