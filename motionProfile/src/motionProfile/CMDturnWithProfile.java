@@ -18,7 +18,7 @@ public class CMDturnWithProfile {
 	
 	public CMDturnWithProfile(double degrees, double cruiseSpeed, TurnType type) {
 		// given distance (inches) and cruise speed (inches per second) turn
-		// with nice profile!
+		// with motion profiler
 		_degrees = degrees;
 		_distance = calcTurnDist(type);
 		System.out.println("Total distance to travel: " + _distance);

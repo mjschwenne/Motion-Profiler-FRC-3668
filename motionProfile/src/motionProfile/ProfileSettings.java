@@ -1,7 +1,7 @@
 package motionProfile;
 
 public class ProfileSettings {
-	public static final double testDistance = 100;
+	public static final double testDistance = 1;
 	public static final double testCruiseSpeed = 75;
 	public static final double testTurnDregees = 90;
 	public static final double testTurnCruiseSpeed = 75;

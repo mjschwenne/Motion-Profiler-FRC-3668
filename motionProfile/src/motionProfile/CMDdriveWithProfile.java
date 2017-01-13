@@ -6,7 +6,7 @@ import motionProfile.ProfileSettings.TurnType;
 import motionProfile.Logger;
 
 public class CMDdriveWithProfile {
-	// DRIVE THE ROBOT WITH MOTION PROFILER
+	// DRIVE THE ROBOT WITH MOTION PROFILER, MOCK COMMAND
 	double MAXSPEED = ProfileSettings.MAXSPEED;
 	double _distance;
 	double _cruiseSpeed;
@@ -19,7 +19,7 @@ public class CMDdriveWithProfile {
 	
 	public CMDdriveWithProfile(double distance, double cruiseSpeed) {
 		// given distance (inches) and cruise speed (inches per second) drive
-		// with nice profile!
+		// with the motion profiler
 		_distance = distance;
 		_cruiseSpeed = cruiseSpeed;
 		mp = new MotionProfiler(_distance, ProfileSettings.initVelocity, _cruiseSpeed, _accerlation);

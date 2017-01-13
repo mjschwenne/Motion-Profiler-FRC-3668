@@ -6,7 +6,6 @@ public class CMDturnWithProfileTester {
 	static CMDturnWithProfileTester driveTester = new CMDturnWithProfileTester();
 	
 	public CMDturnWithProfileTester(){
-		//cmdDrive = new CMDdriveWithProfile(ProfileSettings.testDistance,ProfileSettings.testCruiseSpeed);
 		test();
 	}
 	
@@ -17,7 +16,6 @@ public class CMDturnWithProfileTester {
 			try {
 				Thread.sleep((long)10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -27,7 +25,6 @@ public class CMDturnWithProfileTester {
 	
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		driveTester.test();
 	}
 }

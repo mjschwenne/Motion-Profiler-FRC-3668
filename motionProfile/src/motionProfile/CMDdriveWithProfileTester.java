@@ -8,7 +8,6 @@ public class CMDdriveWithProfileTester {
 	static CMDdriveWithProfileTester driveTester = new CMDdriveWithProfileTester();
 	
 	public CMDdriveWithProfileTester(){
-		//cmdDrive = new CMDdriveWithProfile(ProfileSettings.testDistance,ProfileSettings.testCruiseSpeed);
 		test();
 	}
 	
@@ -18,7 +17,6 @@ public class CMDdriveWithProfileTester {
 			try {
 				Thread.sleep((long)10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
      		}
 			
@@ -26,7 +24,6 @@ public class CMDdriveWithProfileTester {
 		cmdDrive = null;
 	}
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		driveTester.test();
 	}
 }

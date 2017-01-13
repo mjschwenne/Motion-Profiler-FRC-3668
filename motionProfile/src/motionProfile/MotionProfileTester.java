@@ -8,7 +8,6 @@ public class MotionProfileTester {
 
 	public static void main(String[] args) {
 		mpt.test_fpIsEqual();
-		//mpt.test_getProfileShape();
 		mpt.test_getProfileAccellTimes();
 		mpt.test_getProfileDeltaX();
 		mpt.test_getProfileCurrVelocity();
@@ -45,7 +44,7 @@ public class MotionProfileTester {
 	}
 
 	void test_getProfileDeltaX() {
-		// Test if the math is correct for getProfileDeltaX
+		// Tests math for getProfileDeltaX
 		double dist = 30;
 		double initVel = 1;
 		double cruiseVel = 18;
@@ -77,7 +76,7 @@ public class MotionProfileTester {
 	}
 
 	void test_getProfileCurrVelocity() {
-		// Tests if the math is correct for the getcurrentVelocity
+		// checks if getCurrentVelocity() is working
 		double dist = 30;
 		double initVel = 1;
 		double cruiseVel = 18;

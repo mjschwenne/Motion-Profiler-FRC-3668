@@ -12,9 +12,9 @@ public class MotionProfiler {
 	double _cruiseTime;
 	double _deccelTime;
 	double _stopTime;
-	double _xa;
-	double _xc;
-	double _xd;
+	double _xa; //distance travelled during the accellration part
+	double _xc; //distance travelled during the cruising part
+	double _xd; //distance travelled during the deccelleration part
 	Logger log = new Logger(ProfileSettings.motionProfileLogName);
 
 	public MotionProfiler(double distance, double initVelocity, double cruiseVeloctiy, double accelleration) {
@@ -52,17 +52,17 @@ public class MotionProfiler {
 	}
 
 	public double getProfileDeltaX() {
-		// returns the deltaX to change the velocity
+		// returns the distance needed to change the velocity
 		//(Vf*Vf0 = (Vi*Vi) + 2ax
 		return ((_cruiseVelocity * _cruiseVelocity) - (_initVelocity * _initVelocity)) / 2 / _accelleration;
 	}
 
 	public double getProfileCurrVelocity(double time) {
-		// given a time calculate the current Velocity
+		// at any given, time calculate the current Velocity
 		//Vf = Vi + at
 		double currVel = 0;
 		String msg = "error";
-		// we have not started moving yet...
+		// we are stopped
 		if (time < 0) {
 			currVel = 0;
 		}
@@ -73,7 +73,7 @@ public class MotionProfiler {
 			currVel = _initVelocity + (_accelleration * time);
 			_xa = .5 * (_accelleration) * time * time;
 		}
-		// we are cruising at speed
+		// we are cruising
 		else if ((time > _accelTime) && (time < _deccelTime)) {
 			msg = "cruising";
 			//System.out.println(msg);
@@ -88,7 +88,7 @@ public class MotionProfiler {
 			_xd = (_cruiseVelocity * (time - _deccelTime))
 					- (.5 * (_accelleration) * (time - _deccelTime) * (time - _deccelTime));
 		}
-		// we are past when we should stop
+		// we have/need to stop
 		else {
 			msg = "stopped";
 			currVel = 0;
