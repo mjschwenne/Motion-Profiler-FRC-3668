@@ -3,18 +3,18 @@ package motionProfile;
 import motionProfile.Logger;
 
 public class MotionProfiler {
-	double _distance;
-	double _initVelocity;
-	double _cruiseVelocity;
-	double _accelleration;
-	double _accelTime;
-	double _cruiseDistance;
-	double _cruiseTime;
-	double _deccelTime;
-	double _stopTime;
-	double _xa; //distance travelled during the accellration part
-	double _xc; //distance travelled during the cruising part
-	double _xd; //distance travelled during the deccelleration part
+	double _distance = 0;
+	double _initVelocity = 0;
+	double _cruiseVelocity = 0;
+	double _accelleration = 0;
+	double _accelTime = 0;
+	double _cruiseDistance = 0;
+	double _cruiseTime = 0;
+	double _deccelTime = 0;
+	double _stopTime = 0;
+	double _xa = 0; //distance travelled during the accellration part
+	double _xc = 0; //distance travelled during the cruising part
+	double _xd = 0; //distance travelled during the deccelleration part
 	Logger log = new Logger(ProfileSettings.motionProfileLogName);
 
 	public MotionProfiler(double distance, double initVelocity, double cruiseVeloctiy, double accelleration) {
@@ -27,9 +27,6 @@ public class MotionProfiler {
 		_cruiseTime = _cruiseDistance / _cruiseVelocity; 
 		_deccelTime = _accelTime + _cruiseTime;
 		_stopTime = _deccelTime + _accelTime;
-		_xa = 0;
-		_xc = 0;
-		_xd = 0;
 		//System.out.println("Old Cruise Distance: " + _cruiseDistance + "\t Old Cruise Velocity: " + _cruiseVelocity + "\t Old Accel Time: " + _accelTime+ "\t Old Cruise Time: " + _cruiseTime + "\t Old Deccel Time: "+_deccelTime+ "\t Old Stop Time: " + _stopTime);
 		calcProfileShape();
 		//System.out.println("New Cruise Distance: " + _cruiseDistance + "\t New Cruise Velocity: " + _cruiseVelocity + "\t New Accel Time: " + _accelTime+  "\t New Cruise Time: " + _cruiseTime + "\t New Deccel Time: "+_deccelTime+ "\t New Stop Time: " + _stopTime);
@@ -92,6 +89,7 @@ public class MotionProfiler {
 		else {
 			msg = "stopped";
 			currVel = 0;
+			System.out.println(msg + "    " + _stopTime);
 		}
 		//log.makeEntry(msg + " Current Velocity: " + currVel + " Distance Travelled: " + getTotalDistanceTraveled());
 		return currVel;
@@ -116,12 +114,17 @@ public class MotionProfiler {
 		return retValue;
 	}
 	
+	//If cruiseDistance is < 0, recalc to triangle profile
 	public void calcProfileShape(){
 		if(_cruiseDistance < 0){
-			_cruiseVelocity = (_initVelocity + Math.sqrt(2*_accelleration * (_distance/2))) * 0.9;
+			_cruiseVelocity = (_initVelocity + Math.sqrt(2*_accelleration * (_distance/2)));
 			_accelTime = getProfileAccellTimes(); 
-			_cruiseDistance = _distance - (2 * getProfileDeltaX()); 
-			_cruiseTime = _cruiseDistance / _cruiseVelocity; 
+			_cruiseDistance = _distance - (2 * getProfileDeltaX());
+			if(_cruiseVelocity <= 0){
+				_cruiseTime = 0;
+			} else {
+				_cruiseTime = _cruiseDistance / _cruiseVelocity;
+			}
 			_deccelTime = _accelTime + _cruiseTime;
 			_stopTime = _deccelTime + _accelTime;
 		}

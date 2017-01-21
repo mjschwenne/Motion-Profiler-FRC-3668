@@ -13,9 +13,8 @@ public class Logger {
 	StringBuilder sb = new StringBuilder();
 	String name;
 	BufferedWriter writer = null;
-	static String timeLog = new SimpleDateFormat("_MM,dd,yyyy_HH,mm,ss").format(Calendar.getInstance().getTime());
+	static String timeLog = new SimpleDateFormat("_MMddyyyy_HHmmss").format(Calendar.getInstance().getTime());
 	static Logger log = new Logger(ProfileSettings.logLogName);
-	static int number = 1;
 
 	public Logger(String Name){
 		name = Name;
@@ -33,7 +32,6 @@ public class Logger {
 	void makeEntry(String line) {
 		String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
 		entries.add(time+ "\t" +  line);
-		number = number + 1;
 	}
 
 	void write() {
@@ -42,7 +40,7 @@ public class Logger {
 			sb.append("\n");
 		}
 		try {
-			File logFile = new File(name + timeLog);
+			File logFile = new File(name + timeLog + ProfileSettings.logFileExtension);
 			writer = new BufferedWriter(new FileWriter(logFile));
 			writer.write(sb.toString());
 			System.out.println(logFile.getCanonicalPath());
